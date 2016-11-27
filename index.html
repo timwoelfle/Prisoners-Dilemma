@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Prisoner's Dilemma Visualized</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+	<link rel="canonical" href="http://timwoelfle.de/prisoners-dilemma" />
+</head>
+<body>
+	<div id="main">
+		<h1>Prisoner's Dilemma <span class="light">Visualized</span></h1>
+		<p>The <a href="https://en.wikipedia.org/wiki/Prisoner%27s_dilemma">prisoner's dilemma</a> is a popular example of <a href="https://en.wikipedia.org/wiki/Game_theory">game theory</a>. It has gained renewed attention in the last years for a class of short-memory strategies called <a href="https://en.wikipedia.org/wiki/Prisoner%27s_dilemma#Zero-determinant_strategies">zero-determinant</a> first described by <a href="http://www.pnas.org/content/109/26/10409.abstract">Press & Dyson in 2012</a>, all of which is wrapped up very nicely in an <b><a href="http://www.americanscientist.org/issues/pub/2013/6/new-dilemmas-for-the-prisoner/1">article of Brian Hayes</a></b> for the American Scientist. This site visualizes these new strategies against old classics in what is called <a href="https://en.wikipedia.org/wiki/Prisoner%27s_dilemma#Stochastic_iterated_prisoner.27s_dilemma">stochastic iterated prisoner's dilemma</a>, an endless series of games. You can change the input strategies at the bottom or visualize your own result matrix.</p>
+		<table>
+			<thead>
+				<tr>
+					<th>No</th>
+					<th>Strategy</th>
+					<th><span class="clickable">⌀ Get</span></th>
+					<th><span class="clickable">⌀ Give</span></th>
+					<th><span class="clickable">Ratio</span></th>
+					<th><span class="clickable">Wins</span></th>
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+		<svg></svg>
+		<div id="chose">
+			<span>Short-memory strategies</span>
+			<span class="inactive">Own result matrix</span>
+		</div>
+		<div id="strategies">
+			<p>Every row in this textbox represents one player with a short-memory strategy for stochastic iterated prisoner's dilemma and is separated in 5 "columns" by commas like in a CSV file. The first column is the name of the strategy while the other four represent likelihoods (value 0-1) of cooperation depending on the last encounter: cc, cd, dc, dd. First if both players cooperated last move (cc), second if the player was betrayed (=defected) last move (cd), third if the player betrayed his opponent last move (dc) and fourth if both players betrayed each other (dd). Thus a player with the strategy 1/2, 1/2, 1/2, 1/2 choses completely randomly.</p>
+			<p>Depending on the average of these four likelihoods a strategy can be described as <span style="background-color: rgb(44,160,44)">generous</span> (average &gt; 1/2 meaning it's willing to cooperate even if it was betrayed) or <span style="background-color: rgb(214,39,40)">selfish</span> (average &lt; 1/2 meaning it's willing to defect even if it wasn't betrayed), which is reflected by the colors in the chord diagram.</p>
+			<p>Play around and see how the removal or duplication of players changes the ranking! Or add a new player, like a masochist, who incentivizes being defected: "Masochist, 0, 1, 0, 1"</p>
+			<textarea rows="10">
+Random, 1/2, 1/2, 1/2, 1/2
+Always Cooperate, 1, 1, 1, 1
+Always Defect, 0, 0, 0, 0
+Tit For Tat, 1, 0, 1, 0 # Mirrors the opponent
+Win Stay Lose Shift, 1, 0, 0, 1 # Cooperates only in case of cc or dd; also called Pavlov
+Dictate-1.5, 4/5, 8/15, 1/5, 1/15 # Forces opponent to get exactly 1.5 with standard payoff matrix
+Dictate-3.0, 1, 1/3, 1, 2/3 # Forces opponent to get exactly 3 with standard payoff matrix
+Extort-2, 8/9, 1/2, 1/3, 0 # Forces ratio of get-1 and give-1 to be 2 with standard payoff matrix
+Extort-3, 11/13, 1/2, 7/26, 0 # Forces ratio of get-1 and give-1 to be 3 with standard payoff matrix
+ZDGTFT-2, 1, 1/8, 1, 1/4 # Forces ratio of 3-get and 3-give to be 2 with standard payoff matrix; Acronym: Zero-Determinant Generous Tit For Tat</textarea>
+			<p><span class="clickable" id="standardPayoffMatrix">Standard payoff matrix</span> / <span class="clickable" id="traditionalPayoffMatrix">Traditional payoff matrix (negative values indicate years in prison)</span></p>
+			<label for="temptation">Temptation (dc):</label>
+			<input type="number" id="temptation" value="5"> >
+			<label for="reward">Reward (cc):</label>
+			<input type="number" id="reward" value="3"> >
+			<label for="punishment">Punishment (dd):</label>
+			<input type="number" id="punishment" value="1"> >
+			<label for="sucker">Sucker's payoff (cd):</label>
+			<input type="number" id="sucker" value="0">
+			<h2>Additional literature</h2>
+			<ul>
+				<li>First description of ZDGTFT-2: <a href="http://www.pnas.org/content/109/26/10134">Extortion and cooperation in the Prisoner’s Dilemma, Stewart and Plotkin, 2012</a></li>
+				<li>Nice discussion: <a href="https://golem.ph.utexas.edu/category/2012/07/zerodeterminant_strategies_in.html">Zero-Determinant Strategies in the Iterated Prisoner’s Dilemma, Mike Shulman, 2012</a></li>
+				<li>Interactive round for round exploration of zero-determinant strategies: <a href="http://s3.boskent.com/prisoners-dilemma/fixed.html">Press-Dyson Interactive</a></li>
+			</ul>
+		</div>
+		<div id="resultMatrix" class="hidden">
+			<p>This textbox gives you the opportunity to enter and visualize your own result matrix and doesn't only work for stochastic prisoner's dilemma. Every row in this textbox represents one player and is separated in multiple "columns" by commas like in a CSV file. For n rows there have to be n+1 colums because every player has to have a name and one payoff value for the encounters with every player including himself. The example dataset is from the original computer tournement of <a href="http://jcr.sagepub.com/content/24/1/3.short">Robert Axelrod from 1980 (paywall)</a>.</p>
+			<textarea rows="15">
+Tit For Tat, 600, 595, 600, 600, 600, 595, 600, 600, 597, 597, 280, 225, 279, 359, 441
+Tideman & Chieruzzi, 600, 596, 600, 601, 600, 596, 600, 600, 310, 601, 271, 213, 291, 455, 573
+Nydegger, 600, 595, 600, 600, 600, 595, 600, 600, 433, 158, 354, 374, 347, 368, 464
+Grofman, 600, 595, 600, 600, 600, 594, 600, 600, 376, 309, 280, 236, 305, 426, 507
+Shubik, 600, 595, 600, 600, 600, 595, 600, 600, 348, 271, 274, 272, 265, 448, 543
+Stein & Rapoport, 600, 596, 600, 602, 600, 596, 600, 600, 319, 200, 252, 249, 280, 480, 592
+Friedman, 600, 595, 600, 600, 600, 595, 600, 600, 307, 207, 235, 213, 263, 489, 598
+Davis, 600, 595, 600, 600, 600, 595, 600, 600, 307, 194, 238, 247, 253, 450, 598
+Graaskamp, 597, 305, 462, 375, 348, 314, 302, 302, 588, 625, 268, 238, 274, 466, 548
+Downing, 597, 591, 398, 289, 261, 215, 202, 239, 555, 202, 436, 540, 243, 487, 604
+Feld, 285, 272, 426, 286, 297, 255, 235, 239, 274, 704, 246, 236, 272, 420, 467
+Joss, 230, 214, 409, 237, 286, 254, 213, 252, 244, 634, 236, 224, 273, 390, 469
+Tullock, 284, 287, 415, 293, 318, 271, 243, 229, 278, 193, 271, 260, 273, 416, 478
+(Name Withheld), 362, 231, 397, 273, 230, 149, 133, 173, 187, 133, 317, 366, 345, 413, 526
+Random, 442, 142, 407, 313, 219, 141, 108, 137, 189, 102, 360, 416, 419, 300, 450</textarea>
+		</div>
+		<div id="footer">
+			<a href="https://github.com/timwoelfle/prisoners-dilemma">Code on GitHub</a> · <a href="#" id="contact">Contact</a>
+		</div>
+	</div>
+<script src="Matrix.js"></script>
+<script src="EVDecomposition.js"></script>
+<script src="d3.v3.min.js"></script>
+<script src="PrisonersDilemma.js"></script>
+</body>
+</html>

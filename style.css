@@ -1,0 +1,144 @@
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+body {
+	font: 11pt sans-serif;
+	text-align: left;
+	background-color: #fafafa;
+}
+
+#main {
+	position: relative;
+	width: 920px;
+	margin: 0 auto 0 auto;
+}
+
+h1 {
+	margin: 20px 0 20px 0;
+	font-family: "Lucida Grande", "Trebuchet MS", sans-serif;
+	color: rgb(139,115,115);
+	font-size: 36pt;
+	text-shadow: 0 0 10px rgba(139,115,115,0.5);
+}
+
+h1 span.light {
+	font-weight: lighter;
+	color: rgb(86, 144, 86);
+	text-shadow: 0 0 10px rgba(86, 144, 86, 0.5);
+}
+
+p {
+	line-height: 1.2;
+	padding-bottom: 10px;
+}
+
+a {
+	text-decoration: none;
+	color: rgb(86, 144, 86);
+}
+
+a:visited {
+	color: rgb(139,115,115);
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+table {
+    width: 380px;
+	margin: 20px 40px 0 0;
+	float: left;
+	line-height: 1.5;
+}
+
+svg {
+	margin-top: 20px;
+}
+
+th, td {
+	padding: 2px;
+}
+
+.clickable {
+	cursor: pointer;
+	border-bottom: 1px dashed;
+}
+
+.chord path {
+	fill-opacity: .67;
+	stroke: #000;
+	stroke-width: .5px;
+	transition: opacity 0.4s;
+}
+
+div#chose {
+	margin-bottom: 5px;
+}
+
+div#chose span {
+	background-color: rgb(115,132,115);
+	padding: 10px 10px 5px 10px;
+	color: #fafafa;
+	border-radius: 10px 10px 0 0;
+	text-decoration: underline;
+	cursor: pointer
+}
+
+div#chose span.inactive {
+	background-color: rgb(139,115,115);
+}
+
+#strategies, #resultMatrix {
+	background-color: rgb(115,132,115);
+	padding: 10px;
+}
+
+#strategies.hidden, #resultMatrix.hidden {
+	display: none;
+}
+
+textarea {
+	background-color: rgb(127, 127, 127);
+	margin: 10px 0 10px 0;
+	width: 886px;
+	border: 1px solid rgb(221, 221, 221);
+	padding: 5px;
+	font: 8pt sans-serif;
+	line-height: 2;
+}
+
+textarea.faulty {
+	border: 1px solid rgb(214,39,40);
+}
+
+input {
+	border: 1px solid rgb(221, 221, 221);
+	background-color: rgb(127, 127, 127);
+	line-height: 2;
+	width: 40px;
+	text-align: right;
+}
+
+h2 {
+	margin: 40px 0 10px 0;
+}
+
+li {
+	margin-left: 50px;
+}
+
+#footer {
+	padding: 10px;
+	background-color: rgb(115,132,115);
+	padding-bottom: 20px;
+	text-align: right;
+	color: rgb(221, 221, 221);
+}
+
+#strategies a, #resultMatrix a, #footer a {
+	color: rgb(221, 221, 221);
+}
