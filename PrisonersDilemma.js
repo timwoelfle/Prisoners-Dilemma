@@ -1,5 +1,5 @@
 /*
- * Prisoner's Dilemma Visualized v1.0
+ * Prisoner's Dilemma Visualized v1.1
  * http://prisoners-dilemma.timwoelfle.de
  *
  * Copyright by Tim Wölfle (http://timwoelfle.de)
@@ -7,7 +7,7 @@
  *
  */
 
-var Sx, Sy,	players, isResultMatrix;
+var Sx, Sy, players, isResultMatrix;
 
 function createVisualization() {
 	var matrix = [], p, q, markovT, eig, v, vsum, vnorm;
@@ -60,13 +60,13 @@ function createVisualization() {
 
 	/* Create table */
 
-	d3.selectAll("thead th").data([0, 0, "gets", "gives", "ratio", "wins"]).on("click", function(k) {
+	d3.selectAll("#overview thead th").data([0, 0, "gets", "gives", "ratio", "wins"]).on("click", function(k) {
 		tr.sort(function(a, b) { return b[k] - a[k]; });
 	});
 
-	d3.select("tbody").selectAll("tr").remove();
+	d3.select("#overview tbody").selectAll("tr").remove();
 
-	var tr = d3.select("tbody").selectAll("tr").data(players).enter().append("tr")
+	var tr = d3.select("#overview tbody").selectAll("tr").data(players).enter().append("tr")
 		.on("mouseover", function(d, i) { fade(0.1, i); })
 		.on("mouseout", function(d, i) { fade(1, i); });
 
@@ -159,14 +159,32 @@ function createVisualization() {
 		.attr("d", d3.svg.chord().radius(innerRadius))
 		.style("fill", function(d) { return (d3.round(d.source.value, 2) === d3.round(d.target.value, 2)) ? "#ddd" : fill((d.source.value > d.target.value) ? d.source.index : d.target.index); })
 		.style("opacity", 1)
+		.on("mouseover", function(d, i) { fade2(0.1, d.source.index, d.target.index); })
+		.on("mouseout", function(d, i) { fade2(1, d.source.index, d.target.index); })
 	  .append("title")
-		.text(function(d) { return names(d.target.index) + " vs " + names(d.source.index) + "\n" + d3.round(d.target.value, 2) + " : " + d3.round(d.source.value, 2); });
+		.text(function(d) { return ((d.target.value === d.source.value) ? "Tie!\n" : "") + d3.round(d.target.value, 2) + " points: " + names(d.target.index) + ((d.target.value > d.source.value) ? " (Winner)\n" : "\n") + d3.round(d.source.value, 2) + " points: " + names(d.source.index) + ((d.source.value > d.target.value) ? " (Winner)" : ""); });
 
 	// Returns an event handler for fading a given chord group.
 	function fade(opacity, i) {
 		svg.selectAll(".chord path").filter(function(d) { return d.source.index !== i && d.target.index !== i; })
 			.style("opacity", opacity);
 	}
+	
+	function fade2(opacity, i, j) {
+		g.filter(function(d, index) { return (index !== i && index !== j); })
+			.style("opacity", opacity);
+		svg.selectAll(".chord path").filter(function(d) { return (d.source.index !== i || d.target.index !== j); })
+			.style("opacity", opacity);
+	}
+	
+	/* Create payoff matrix table */
+	var newLine;
+	d3.selectAll("#calculatedResultMatrix thead th").remove();
+	d3.selectAll("#calculatedResultMatrix tbody tr").remove();
+	d3.select("#calculatedResultMatrix thead tr").selectAll("th").data(players).enter().append("th").html(function(d) { return d[0]; });
+	newLine = d3.select("#calculatedResultMatrix tbody").selectAll("tr").data(players).enter().append("tr");
+	newLine.append("th").html(function(d) { return d[0]; });
+	newLine.selectAll("td").data(function(d,i) { return matrix[i]; }).enter().append("td").html(function(d) { return d3.round(d,2); });
 }
 
 function parseCSVInput(CSVstring) {
@@ -177,7 +195,7 @@ function parseCSVInput(CSVstring) {
 
 			// Check if the number of columns is 5 (for strategies) or n+1 (n=rows for own result matrix)
 			if ((!isResultMatrix && row.length !== 5) ||
-				(isResultMatrix && row.length !== d3.select("#resultMatrix textarea").property("value").split("\n").length + 1)) {
+				(isResultMatrix && row.length !== d3.select("#ownResultMatrix textarea").property("value").split("\n").length + 1)) {
 				return false;
 			}
 
@@ -235,11 +253,11 @@ function changePayoffMatrix(t, r, p, s) {
 
 function loadResultMatrix() {
 	isResultMatrix = 1;
-	players = parseCSVInput(d3.select("#resultMatrix textarea").property("value"));
+	players = parseCSVInput(d3.select("#ownResultMatrix textarea").property("value"));
 	if (players.indexOf(false) !== -1) {
-		d3.select("#resultMatrix textarea").classed("faulty", true);
+		d3.select("#ownResultMatrix textarea").classed("faulty", true);
 	} else {
-		d3.select("#resultMatrix textarea").classed("faulty", false);
+		d3.select("#ownResultMatrix textarea").classed("faulty", false);
 		createVisualization();
 	}
 }
@@ -248,7 +266,7 @@ function loadResultMatrix() {
 
 d3.selectAll("#strategies input").on("change", loadStrategies);
 d3.select("#strategies textarea").on("change", loadStrategies);
-d3.select("#resultMatrix textarea").on("change", loadResultMatrix);
+d3.select("#ownResultMatrix textarea").on("change", loadResultMatrix);
 
 d3.select("#standardPayoffMatrix").on("click", function() { changePayoffMatrix(5, 3, 1, 0); });
 d3.select("#traditionalPayoffMatrix").on("click", function() { changePayoffMatrix(0, -1, -2, -3); });
@@ -257,14 +275,14 @@ d3.select("#chose span:first-child").on("click", function() {
 	d3.select("#chose span:first-child").classed("inactive", false);
 	d3.select("#chose span:last-child").classed("inactive", true);
 	d3.select("#strategies").classed("hidden", false);
-	d3.select("#resultMatrix").classed("hidden", true);
+	d3.select("#ownResultMatrix").classed("hidden", true);
 	loadStrategies();
 });
 d3.select("#chose span:last-child").on("click", function() {
 	d3.select("#chose span:first-child").classed("inactive", true);
 	d3.select("#chose span:last-child").classed("inactive", false);
 	d3.select("#strategies").classed("hidden", true);
-	d3.select("#resultMatrix").classed("hidden", false);
+	d3.select("#ownResultMatrix").classed("hidden", false);
 	loadResultMatrix();
 });
 

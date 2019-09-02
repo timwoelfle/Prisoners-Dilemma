@@ -9,8 +9,8 @@
 <body>
 	<div id="main">
 		<h1>Prisoner's Dilemma <span class="light">Visualized</span></h1>
-		<p>The <a href="https://en.wikipedia.org/wiki/Prisoner%27s_dilemma">prisoner's dilemma</a> is a popular example of <a href="https://en.wikipedia.org/wiki/Game_theory">game theory</a>. It has gained renewed attention in the last years for a class of short-memory strategies called <a href="https://en.wikipedia.org/wiki/Prisoner%27s_dilemma#Zero-determinant_strategies">zero-determinant</a> first described by <a href="https://www.pnas.org/content/109/26/10409.abstract">Press & Dyson in 2012</a>, all of which is wrapped up very nicely in an <b><a href="https://www.americanscientist.org/article/new-dilemmas-for-the-prisoner">article of Brian Hayes</a></b> for the American Scientist. This site visualizes these new strategies against old classics in what is called <a href="https://en.wikipedia.org/wiki/Prisoner%27s_dilemma#Stochastic_iterated_prisoner.27s_dilemma">stochastic iterated prisoner's dilemma</a>, an endless series of games. You can change the input strategies at the bottom or visualize your own result matrix.</p>
-		<table>
+		<p>The <a href="https://en.wikipedia.org/wiki/Prisoner%27s_dilemma">prisoner's dilemma</a> is a popular example of <a href="https://en.wikipedia.org/wiki/Game_theory">game theory</a>. It has gained renewed attention for a class of short-memory strategies called <a href="https://en.wikipedia.org/wiki/Prisoner%27s_dilemma#Zero-determinant_strategies">zero-determinant</a> first described by <a href="https://www.pnas.org/content/109/26/10409.abstract">Press & Dyson in 2012</a>, all of which is wrapped up very nicely in an <b><a href="https://www.americanscientist.org/article/new-dilemmas-for-the-prisoner">article by Brian Hayes</a></b> for the American Scientist. This site visualizes the result matrix of these new strategies against old classics in what is called <a href="https://en.wikipedia.org/wiki/Prisoner%27s_dilemma#Stochastic_iterated_prisoner.27s_dilemma">stochastic iterated prisoner's dilemma</a>, an endless series of games. You can change the input strategies at the bottom or visualize your own result matrix.</p>
+		<table id="overview">
 			<thead>
 				<tr>
 					<th>No</th>
@@ -30,7 +30,7 @@
 		</div>
 		<div id="strategies">
 			<p>Every row in this textbox represents one player with a short-memory strategy for stochastic iterated prisoner's dilemma and is separated in 5 "columns" by commas like in a CSV file. The first column is the name of the strategy while the other four represent likelihoods (value 0-1) of cooperation depending on the last encounter: cc, cd, dc, dd. First if both players cooperated last move (cc), second if the player was betrayed (=defected) last move (cd), third if the player betrayed his opponent last move (dc) and fourth if both players betrayed each other (dd). Thus a player with the strategy 1/2, 1/2, 1/2, 1/2 choses completely randomly.</p>
-			<p>Depending on the average of these four likelihoods a strategy can be described as <span style="background-color: rgb(44,160,44)">generous</span> (average &gt; 1/2 meaning it's willing to cooperate even if it was betrayed) or <span style="background-color: rgb(214,39,40)">selfish</span> (average &lt; 1/2 meaning it's willing to defect even if it wasn't betrayed), which is reflected by the colors in the chord diagram.</p>
+			<p>Depending on the average of these four likelihoods a strategy can be described as <span style="background-color: rgb(44,160,44)">generous</span> (average &gt; 1/2 meaning it's willing to cooperate even if it was betrayed) or <span style="background-color: rgb(214,39,40)">selfish</span> (average &lt; 1/2 meaning it's willing to defect even if it wasn't betrayed), which is reflected by the players' colors in the chord diagram. The chord's color indicates the winner, if it's light grey it's a tie.</p>
 			<p>Play around and see how the removal or duplication of players changes the ranking! Or add a new player, like a masochist, who incentivizes being defected: "Masochist, 0, 1, 0, 1"</p>
 			<textarea rows="10">
 Random, 1/2, 1/2, 1/2, 1/2
@@ -52,6 +52,11 @@ ZDGTFT-2, 1, 1/8, 1, 1/4 # Forces ratio of 3-get and 3-give to be 2 with standar
 			<input type="number" id="punishment" value="1"> >
 			<label for="sucker">Sucker's payoff (cd):</label>
 			<input type="number" id="sucker" value="0">
+			<h2>Calculated result matrix (basis for visualization)</h2>
+			<table id="calculatedResultMatrix">
+				<thead><tr><td>Get (rows) / Give (columns)</td></tr></thead>
+				<tbody></tbody>
+			</table>
 			<h2>Additional literature</h2>
 			<ul>
 				<li>First description of ZDGTFT-2: <a href="https://www.pnas.org/content/109/26/10134">Extortion and cooperation in the Prisoner’s Dilemma, Stewart and Plotkin, 2012</a></li>
@@ -59,7 +64,7 @@ ZDGTFT-2, 1, 1/8, 1, 1/4 # Forces ratio of 3-get and 3-give to be 2 with standar
 				<li>Interactive round for round exploration of zero-determinant strategies: <a href="https://s3.boskent.com/prisoners-dilemma/fixed.html">Press-Dyson Interactive</a></li>
 			</ul>
 		</div>
-		<div id="resultMatrix" class="hidden">
+		<div id="ownResultMatrix" class="hidden">
 			<p>This textbox gives you the opportunity to enter and visualize your own result matrix and doesn't only work for stochastic prisoner's dilemma. Every row in this textbox represents one player and is separated in multiple "columns" by commas like in a CSV file. For n rows there have to be n+1 colums because every player has to have a name and one payoff value for the encounters with every player including himself. The example dataset is from the original computer tournement of <a href="https://journals.sagepub.com/doi/abs/10.1177/002200278002400101">Robert Axelrod from 1980 (paywall)</a>.</p>
 			<textarea rows="15">
 Tit For Tat, 600, 595, 600, 600, 600, 595, 600, 600, 597, 597, 280, 225, 279, 359, 441
