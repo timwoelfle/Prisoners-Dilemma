@@ -290,8 +290,8 @@ d3.select("#chose span:last-child").on("click", function() {
 
 d3.select("#contact").on("mouseup", function() {
 	d3.select("#contact").on("mouseup", null);
-	d3.select(this).html("tim.woelfle@web.de")
-		.attr("href", "mailto:tim.woelfle@web.de?subject=Prisoner%27s%20Dilemma");
+	d3.select(this).html("admin@timwoelfle.de")
+		.attr("href", "mailto:admin@timwoelfle.de?subject=Prisoner%27s%20Dilemma");
 });
 
 /* Initialize: load strategies */
