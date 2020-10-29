@@ -85,7 +85,7 @@ function createVisualization() {
 
 	/* Create chord diagram */
 
-	d3.select("svg g").remove();
+	d3.select("svg g g").remove();
 
 	var chord = d3.layout.chord()
 		.padding(0.05)
@@ -114,11 +114,7 @@ function createVisualization() {
 
 	function names(i) { return players[i][0]; }
 
-	var svg = d3.select("svg")
-		.attr("width", width)
-		.attr("height", height)
-	   .append("g")
-		.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+	var svg = d3.select("svg g").append("g");
 
 	// Groups
 	var g = svg.append("g").selectAll("g")
